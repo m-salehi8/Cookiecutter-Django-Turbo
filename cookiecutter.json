@@ -1,0 +1,39 @@
+{
+    "project_name": "Django Turbo Project",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "database": [
+        "postgres",
+        "sqlite",
+        "mysql"
+    ],
+    "db_name": "{{ cookiecutter.project_slug }}_db",
+    "db_user": "{{ cookiecutter.project_slug }}_user",
+    "db_password": "changeme123",
+    "db_host": "localhost",
+    "db_port": "5432",
+    "use_custom_user": [
+        "y",
+        "n"
+    ],
+    "user_login_field": [
+        "username",
+        "email",
+        "phone"
+    ],
+    "use_drf": [
+        "y",
+        "n"
+    ],
+    "use_cache": [
+        "y",
+        "n"
+    ],
+    "use_celery": [
+        "y",
+        "n"
+    ],
+    "celery_broker": [
+        "redis",
+        "rabbitmq"
+    ]
+}

@@ -1,0 +1,32 @@
+# Core Django dependencies
+Django>=4.2,<5.0
+{% if cookiecutter.database == "postgres" %}
+psycopg2-binary>=2.9.0
+{% elif cookiecutter.database == "mysql" %}
+mysqlclient>=2.1.0
+{% endif %}
+{% if cookiecutter.use_cache == "y" %}
+django-redis>=5.2.0
+{% endif %}
+{% if cookiecutter.use_celery == "y" %}
+{% if cookiecutter.celery_broker == "redis" %}
+celery[redis]>=5.3.0
+{% else %}
+celery>=5.3.0
+kombu>=5.3.0
+{% endif %}
+{% endif %}
+{% if cookiecutter.use_drf == "y" %}
+djangorestframework>=3.14.0
+{% endif %}
+
+# Development dependencies
+pytest>=7.0.0
+pytest-django>=4.5.0
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+
+# Production dependencies
+gunicorn>=21.0.0
+whitenoise>=6.5.0
