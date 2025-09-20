@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': '{{ cookiecutter.db_name }}',
         'USER': '{{ cookiecutter.db_user }}',
         'PASSWORD': '{{ cookiecutter.db_password }}',
-        'HOST': '{{ cookiecutter.db_host }}',
+        'HOST': '127.0.0.1',
         'PORT': '{{ cookiecutter.db_port }}',
     }
 }
@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': '{{ cookiecutter.db_name }}',
         'USER': '{{ cookiecutter.db_user }}',
         'PASSWORD': '{{ cookiecutter.db_password }}',
-        'HOST': '{{ cookiecutter.db_host }}',
+        'HOST': '127.0.0.1',
         'PORT': '{{ cookiecutter.db_port }}',
     }
 }
