@@ -43,7 +43,7 @@ pip install cookiecutter
 
 ### 2. Generate Your Project
 ```bash
-cookiecutter https://github.com/your-username/cookiecutter-django-turbo.git
+cookiecutter https://github.com/m-salehi8/Cookiecutter-Django-Turbo.git
 ```
 
 ### 3. Follow the Interactive Prompts
