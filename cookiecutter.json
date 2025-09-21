@@ -35,5 +35,21 @@
     "celery_broker": [
         "redis",
         "rabbitmq"
+    ],
+    "use_docker": [
+        "y",
+        "n"
+    ],
+    "use_jwt": [
+        "y",
+        "n"
+    ],
+    "use_api_docs": [
+        "y",
+        "n"
+    ],
+    "use_precommit": [
+        "y",
+        "n"
     ]
 }

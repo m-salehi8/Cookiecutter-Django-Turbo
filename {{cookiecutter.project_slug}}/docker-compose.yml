@@ -1,0 +1,104 @@
+{% if cookiecutter.use_docker == "y" %}
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 core.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      {% if cookiecutter.database == "postgres" %}
+      - db
+      {% elif cookiecutter.database == "mysql" %}
+      - db
+      {% endif %}
+      {% if cookiecutter.use_cache == "y" or cookiecutter.use_celery == "y" %}
+      - redis
+      {% endif %}
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.local
+    env_file:
+      - .env
+
+  {% if cookiecutter.database == "postgres" %}
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB={{ cookiecutter.db_name }}
+      - POSTGRES_USER={{ cookiecutter.db_user }}
+      - POSTGRES_PASSWORD={{ cookiecutter.db_password }}
+    ports:
+      - "5432:5432"
+  {% elif cookiecutter.database == "mysql" %}
+  db:
+    image: mysql:8.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE={{ cookiecutter.db_name }}
+      - MYSQL_USER={{ cookiecutter.db_user }}
+      - MYSQL_PASSWORD={{ cookiecutter.db_password }}
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    ports:
+      - "3306:3306"
+  {% endif %}
+
+  {% if cookiecutter.use_cache == "y" or cookiecutter.use_celery == "y" %}
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+  {% endif %}
+
+  {% if cookiecutter.use_celery == "y" %}
+  celery_worker:
+    build: .
+    command: celery -A core worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      {% if cookiecutter.database == "postgres" %}
+      - db
+      {% elif cookiecutter.database == "mysql" %}
+      - db
+      {% endif %}
+      {% if cookiecutter.use_cache == "y" or cookiecutter.use_celery == "y" %}
+      - redis
+      {% endif %}
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.local
+    env_file:
+      - .env
+
+  celery_beat:
+    build: .
+    command: celery -A core beat -l info
+    volumes:
+      - .:/app
+    depends_on:
+      {% if cookiecutter.database == "postgres" %}
+      - db
+      {% elif cookiecutter.database == "mysql" %}
+      - db
+      {% endif %}
+      {% if cookiecutter.use_cache == "y" or cookiecutter.use_celery == "y" %}
+      - redis
+      {% endif %}
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.local
+    env_file:
+      - .env
+  {% endif %}
+
+volumes:
+  {% if cookiecutter.database == "postgres" %}
+  postgres_data:
+  {% elif cookiecutter.database == "mysql" %}
+  mysql_data:
+  {% endif %}
+{% endif %}
