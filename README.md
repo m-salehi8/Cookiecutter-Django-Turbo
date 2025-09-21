@@ -43,7 +43,7 @@ pip install cookiecutter
 
 ### 2. Generate Your Project
 ```bash
-cookiecutter https://github.com/m-salehi8/Cookiecutter-Django-Turbo.git
+cookiecutter https://github.com/your-username/cookiecutter-django-turbo.git
 ```
 
 ### 3. Follow the Interactive Prompts
@@ -75,9 +75,20 @@ python manage.py runserver
 my_awesome_app/
 ├── 📄 manage.py
 ├── 📄 requirements.txt
+├── 📄 Dockerfile               # Docker configuration (if enabled)
+├── 📄 docker-compose.yml       # Docker Compose setup (if enabled)
+├── 📄 .env.example            # Environment variables template
+├── 📄 .env.docker.example     # Docker environment template (if enabled)
+├── 📄 .dockerignore           # Docker ignore file (if enabled)
+├── 📄 .pre-commit-config.yaml # Pre-commit hooks (if enabled)
 ├── 📁 core/                    # Django settings & config
 │   ├── __init__.py
-│   ├── settings.py            # Dynamic configuration
+│   ├── settings/               # Modular settings
+│   │   ├── __init__.py
+│   │   ├── base.py            # Base configuration
+│   │   ├── local.py           # Development settings
+│   │   └── production.py      # Production settings
+│   ├── asgi.py                # ASGI configuration
 │   ├── urls.py
 │   ├── wsgi.py
 │   └── celery.py              # Celery config (if enabled)
@@ -124,6 +135,32 @@ flake8
 isort .
 ```
 
+## 🐳 Docker Support
+
+The template includes comprehensive Docker support:
+
+### Docker Development
+```bash
+# Copy Docker environment file
+cp .env.docker.example .env
+
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Run migrations
+docker-compose exec web python manage.py migrate
+
+# Create superuser
+docker-compose exec web python manage.py createsuperuser
+```
+
+### Docker Services
+- **Web Application**: Django app with Gunicorn
+- **Database**: PostgreSQL/MySQL (based on configuration)
+- **Redis**: Caching and Celery broker (if enabled)
+- **Celery Worker**: Background task processing (if enabled)
+- **Celery Beat**: Scheduled tasks (if enabled)
+
 ## 🚀 Production Deployment
 
 The template includes production-ready configurations:
@@ -133,6 +170,7 @@ The template includes production-ready configurations:
 - **Logging**: Comprehensive logging setup
 - **Security**: Production security settings
 - **Monitoring**: Health checks and metrics
+- **Docker**: Production-ready containerization
 
 ## 🤝 Contributing
 
